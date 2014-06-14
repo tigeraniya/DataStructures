@@ -22,7 +22,7 @@ class TestUniq(unittest.TestCase):
         self.assertEqual(False,uniq([9,1,2,1]))
 
 def rec_uniq(ilst,n):
-    """
+    """C 4.11
     recursive : first checks nth element uniqueness in n-1 elements,
                 then n-1th element uniqueness in n-2 elements
     """
@@ -55,7 +55,76 @@ class TestRuniq(unittest.TestCase):
         self.assertEqual(False,rec_uniq([1,2,3,1],4))
         self.assertEqual(False,rec_uniq([1,2,1,3,5],4))
 
+def rprod(m,n):
+    if n <= 0:
+        return 0
+    else:
+        return m + product(m,n-1)
+    
+def product(m,n):
+    """C 4.12 
+    recursive:compute product of two positive numbers using only +/- 
+    """
+    if m > n:  # if n > m then we are calling functions more then needed
+        return rprod(m,n)
+    else:
+        return rprod(n,m)
+
+class TestProduct(unittest.TestCase):
+    def test_product(self):
+        self.assertEqual(5,product(5,1))
+        self.assertEqual(0,product(5,0))
+        self.assertEqual(22,product(2,11))
+        self.assertEqual(0,product(0,5))
+
+def thanoi(src,hlp,dst,n):
+    if n > 0 :
+        moves = thanoi(src,dst,hlp,n-1) # move from source to helper n-1 tiles using destination
+        moves += 1 
+        dst[0].append(src[0].pop()) # after we have largest tile on source , move it to destination
+        #print [[str((k,i[0])).ljust(20,' ') for i in  src,hlp,dst if i[1] == k] for k in ["src","hlp","dst"]]
+        moves += thanoi(hlp,src,dst,n-1) # now move n -1 tiles from helper to destination using source
+        return moves
+    else:
+        return 0
 
 
+def towers_of_hanoi(src,hlp,dst):
+    """C 4.14
+    recursive : towers of hanoi
+    src,hlp,dst strings are attached on to tuple to know which tower are we on really
+
+    """
+    return thanoi((src,"src"),(hlp,"hlp"),(dst,"dst"),len(src))
+    
+class TestHanoi(unittest.TestCase):
+    def test_hanoi(self):
+        self.assertEqual(7,towers_of_hanoi([3,2,1],[],[]))        
+
+
+def subsets(ilst,n):
+    """C 4.15
+    get all subsets of a set without repitition
+    """
+    result = [[]]
+    for x in ilst:
+        print x,result
+        result.extend([[x]+subset for subset in result])
+    return result
+
+def rsubsets(ilst,n):
+    result = []
+    if (n>0):
+        tresult = rsubsets(ilst,n-1)
+        return tresult + [sub + [n] for sub in tresult]
+    else:
+        result.append([])
+    return result
+
+class TestSubSet(unittest.TestCase):
+    def test_subset(self):
+        self.assertIn([],subsets([1,2],2))
+        self.assertIn([],rsubsets([1,2],2))
+        
 if __name__ == '__main__':
     unittest.main()
