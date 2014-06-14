@@ -108,11 +108,14 @@ def subsets(ilst,n):
     """
     result = [[]]
     for x in ilst:
-        print x,result
+        #print x,result
         result.extend([[x]+subset for subset in result])
     return result
 
 def rsubsets(ilst,n):
+    """C 4.15
+    recursive : get all subsets of a set
+    """
     result = []
     if (n>0):
         tresult = rsubsets(ilst,n-1)
@@ -125,6 +128,49 @@ class TestSubSet(unittest.TestCase):
     def test_subset(self):
         self.assertIn([],subsets([1,2],2))
         self.assertIn([],rsubsets([1,2],2))
+
+def revstr(istr,s,e):
+    if s > e-1:
+        return ''
+    elif s == e-1:
+        return istr[s]
+    else:
+        return istr[e-1] + revstr(istr,s+1,e-1) + istr[s]
+
+def reverse_string(istr):
+    """C 4.16 
+    recursive :reverse a string
+    """
+    return revstr(istr,0,len(istr))
+
+
+class TestRevStr(unittest.TestCase):
+    def test_revstr(self):
+        self.assertEqual("idnhem",reverse_string("mehndi"))
+        self.assertEqual("iagnhem",reverse_string("mehngai"))
+        self.assertEqual("im",reverse_string("mi"))
+        self.assertEqual("i",reverse_string("i"))
+
+def _cpalin(istr,s,e):
+    if s > e :
+        return True
+    else:
+        return istr[s] == istr[e-1] and  _cpalin(istr,s+1,e-1)
+
+def check_palindrome(istr):
+    """C 4.17
+    checking if string is palindrome or not 
+    palindrom strings are symmetrical read forward or backwords. sis,racecar
+    """
+    return _cpalin(istr,0,len(istr))
+
+class TestPalindrome(unittest.TestCase):
+    def test_palindrome(self):
+        self.assertEqual(True,check_palindrome("idnhemmehndi"))
+        self.assertEqual(True,check_palindrome("i"))
+        self.assertEqual(True,check_palindrome("sis"))
+        self.assertEqual(False,check_palindrome("sios"))
         
+       
 if __name__ == '__main__':
     unittest.main()
