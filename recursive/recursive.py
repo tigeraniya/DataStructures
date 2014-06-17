@@ -88,7 +88,6 @@ def thanoi(src,hlp,dst,n):
     else:
         return 0
 
-
 def towers_of_hanoi(src,hlp,dst):
     """C 4.14
     recursive : towers of hanoi
@@ -100,7 +99,6 @@ def towers_of_hanoi(src,hlp,dst):
 class TestHanoi(unittest.TestCase):
     def test_hanoi(self):
         self.assertEqual(7,towers_of_hanoi([3,2,1],[],[]))        
-
 
 def subsets(ilst,n):
     """C 4.15
@@ -136,6 +134,7 @@ def revstr(istr,s,e):
         return istr[s]
     else:
         return istr[e-1] + revstr(istr,s+1,e-1) + istr[s]
+               bbb            
 
 def reverse_string(istr):
     """C 4.16 
@@ -143,34 +142,64 @@ def reverse_string(istr):
     """
     return revstr(istr,0,len(istr))
 
-
 class TestRevStr(unittest.TestCase):
     def test_revstr(self):
         self.assertEqual("idnhem",reverse_string("mehndi"))
-        self.assertEqual("iagnhem",reverse_string("mehngai"))
+        self.assertEqual("iagnhem",reverse_string("mehngai"))                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
         self.assertEqual("im",reverse_string("mi"))
-        self.assertEqual("i",reverse_string("i"))
 
-def _cpalin(istr,s,e):
-    if s > e :
-        return True
+vow = ['a','e','i','o','u']
+
+def tletter(istr,n):
+    tmp_ret = [0,0]
+    if n <= 0:
+        return tmp_ret
     else:
-        return istr[s] == istr[e-1] and  _cpalin(istr,s+1,e-1)
+        tmp_iret = tletter(istr,n-1)
+        if istr[n-1] in vow:
+            tmp_iret[0] +=1
+        else:
+            tmp_iret[1] += 1
+        return tmp_iret
+    
 
-def check_palindrome(istr):
-    """C 4.17
-    checking if string is palindrome or not 
-    palindrom strings are symmetrical read forward or backwords. sis,racecar
-    """
-    return _cpalin(istr,0,len(istr))
-
-class TestPalindrome(unittest.TestCase):
-    def test_palindrome(self):
-        self.assertEqual(True,check_palindrome("idnhemmehndi"))
-        self.assertEqual(True,check_palindrome("i"))
-        self.assertEqual(True,check_palindrome("sis"))
-        self.assertEqual(False,check_palindrome("sios"))
+def letter_type(word):
+    ret =  tletter(word,len(word))
+    if ret[0] > ret[1]:
+        print "more vowels"
+    elif ret[0] == ret[1]:
+        print "same nos"
+    else:
+        print "more consonents"
+      
+class Test_LetterType(unittest.TestCase):
+    
+    def test_letter_type(self):
+        self.assertEqual([2,1],tletter("aba",3))
+        self.assertEqual([2,2],tletter("baba",4))
         
-       
+is_even = lambda x : x % 2 == 0
+is_odd = lambda x : x % 2 != 0
+
+def _even_odd_sort(ilst,n,mark):
+    """
+    """
+    if n-2 < 0:
+        return ilst
+    else: 
+        if is_even(ilst[n-1]) and is_odd(ilst[n-2]):
+            ilst[mark[0]-1],ilst[n-2] = ilst[n-2],ilst[mark[0]-1]
+            mark[0] -= 1
+    return _even_odd_sort(ilst,n-1,mark)
+ 
+def even_odd_sort(ilst):
+    l = len(ilst)
+    return _even_odd_sort(ilst,l,[l])
+class TestEvenOddSort(unittest.TestCase):
+    
+    def test_even_odd(self):
+        self.assertEqual([2,2,4,1,1,3],even_odd_sort([1,2,1,2,3,4]))
+        self.assertEqual([4,2,2,9,1,1,3],even_odd_sort([9,1,2,1,2,3,4]))
+
 if __name__ == '__main__':
     unittest.main()
