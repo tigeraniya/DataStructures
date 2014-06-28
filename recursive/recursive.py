@@ -134,7 +134,7 @@ def revstr(istr,s,e):
         return istr[s]
     else:
         return istr[e-1] + revstr(istr,s+1,e-1) + istr[s]
-               bbb            
+           
 
 def reverse_string(istr):
     """C 4.16 
